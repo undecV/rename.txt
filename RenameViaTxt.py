@@ -1,7 +1,6 @@
-# Encoding: UTF-8
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
-
-import io
 import sys
 import os
 import argparse
@@ -25,7 +24,9 @@ FILE_NAME = os.path.splitext(os.path.basename(__file__))[0]
 DESCRIPTION = "Rename files or dirs via your text editor."
 
 
-opt = {"LS_FILE_PATH":  "./RENAME.json"}
+opt = {"LS_FILE_PATH":  "./RENAME.json",
+       "TEXT_EDITOR_PATH": "D:\\Program Files (x86)\\Notepad++\\notepad++.exe",
+       "TEXT_EDITOR_ARGS": "{LS_FILE_PATH}"}
 
 
 def main(argv):
@@ -65,6 +66,8 @@ def main(argv):
         print("[ERROR] File write failed.")
         exit(-1)
 
+    os.system('"{0}" {1}'.format(opt["TEXT_EDITOR_PATH"],
+                                 opt["TEXT_EDITOR_ARGS"].format(LS_FILE_PATH=opt["LS_FILE_PATH"])))
     print("Edit, and save the file `{0}`, then hit `ENTER` key...".format(opt["LS_FILE_PATH"]))
     input()
 

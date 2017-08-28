@@ -15,27 +15,26 @@ Windows
 ## How to use
 
 - Install - 安裝
-  
+
   1. Download `RenameViaTxt.py`.
   
      下載 `RenameViaTxt.py`。
      
-  1. Enter the cmd - 輸入指令
-
+  2. Enter the cmd - 輸入指令
      ```shell
      py RenameViaTxt.py -b 
      ```
-
+     
      And:
-
+     
      還有：
-
+     
      ```shell
      py RenameViaTxt.py -b -ep
      ```
-
+     
      Then you will see `RenameViaTxt.bat` and `RenameViaTxt_ep.bat`.
-
+     
      之後你會看到 `RenameViaTxt.bat` 和 `RenameViaTxt_ep.bat` 兩個文件。
 
 - Usage - 使用
@@ -44,18 +43,19 @@ Windows
   
      拖放你想要重命名的檔案到 `RenameViaTxt.bat` 或 `RenameViaTxt_ep.bat`。
      
-  1. This script will generate a json file `./RENAME.json` on the operation path.
+  2. This script will generate a json file `./RENAME.json` on the operation path.
   
      腳本會生成一個 json 檔案 `./RENAME.json` 在你的工作目錄。
      
-  1. Edit, and save the file `./RENAME.json`, then hit `ENTER` key.
+  3. Edit, and save the file `./RENAME.json`, then hit `ENTER` key.
   
      編輯，之後保存 `./RENAME.json` 檔案，然後按 `ENTER`。
      
-  1. Files will be renamed automatically.
+  4. Files will be renamed automatically.
   
      檔案會被自動重命名。
 
+     
 ## Help
 
 ```
