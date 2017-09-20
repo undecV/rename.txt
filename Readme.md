@@ -1,4 +1,4 @@
-# Rename via TXT
+# rename.txt
 
 Rename files or dirs via your text editor.
 
@@ -15,51 +15,51 @@ Windows
 ## How to use
 
 - Install - 安裝
-
-  1. Download `RenameViaTxt.py`.
   
-     下載 `RenameViaTxt.py`。
+  1. Download `rename_txt.py`.
+  
+     下載 `rename_txt.py`。
      
-  2. Enter the cmd - 輸入指令
+  1. Enter the cmd - 輸入指令
+
      ```shell
-     py RenameViaTxt.py -b 
+     py rename_txt.py -b 
      ```
-     
+
      And:
-     
+
      還有：
-     
+
      ```shell
-     py RenameViaTxt.py -b -ep
+     py rename_txt.py -b -ep
      ```
-     
-     Then you will see `RenameViaTxt.bat` and `RenameViaTxt_ep.bat`.
-     
-     之後你會看到 `RenameViaTxt.bat` 和 `RenameViaTxt_ep.bat` 兩個文件。
+
+     Then you will see `rename_txt.bat` and `rename_txt_ep.bat`.
+
+     之後你會看到 `rename_txt.bat` 和 `rename_txt_ep.bat` 兩個文件。
 
 - Usage - 使用
 
-  1. drag and drop files which you want to renamed into `RenameViaTxt.bat` or `RenameViaTxt_ep.bat`.
+  1. drag and drop files which you want to renamed into `rename_txt.bat` or `rename_txt_ep.bat`.
   
-     拖放你想要重命名的檔案到 `RenameViaTxt.bat` 或 `RenameViaTxt_ep.bat`。
+     拖放你想要重命名的檔案到 `rename_txt.bat` 或 `rename_txt_ep.bat`。
      
-  2. This script will generate a json file `./RENAME.json` on the operation path.
+  1. This script will generate a json file `./RENAME.json` on the operation path.
   
      腳本會生成一個 json 檔案 `./RENAME.json` 在你的工作目錄。
      
-  3. Edit, and save the file `./RENAME.json`, then hit `ENTER` key.
+  1. Edit, and save the file `./RENAME.json`, then hit `ENTER` key.
   
      編輯，之後保存 `./RENAME.json` 檔案，然後按 `ENTER`。
      
-  4. Files will be renamed automatically.
+  1. Files will be renamed automatically.
   
      檔案會被自動重命名。
 
-     
 ## Help
 
 ```
-usage: RenameViaTxt.py [-h] [-ep] [-b] [-v] PATH [PATH ...]
+usage: rename_txt.py [-h] [-ep] [-b] [-v] PATH [PATH ...]
 
 Rename files or dirs via your text editor.
 批量重命名文件，通過你的文字編輯器。

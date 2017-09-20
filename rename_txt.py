@@ -18,7 +18,7 @@ __maintainer__ = ""
 __email__ = ""
 __status__ = ""
 
-PROJ_NAME = "Rename via TXT"
+PROJ_NAME = "rename.txt"
 FILE_PATH = os.path.dirname(__file__)
 FILE_NAME = os.path.splitext(os.path.basename(__file__))[0]
 DESCRIPTION = "Rename files or dirs via your text editor."
