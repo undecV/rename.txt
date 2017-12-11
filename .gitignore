@@ -1,0 +1,7 @@
+# Python:
+/.idea
+/__pycache__
+*.pyc
+
+# Windows:
+*.lnk  # Windows File Shortcut
