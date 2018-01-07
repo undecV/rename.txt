@@ -5,3 +5,7 @@
 
 # Windows:
 *.lnk  # Windows File Shortcut
+
+# Project:
+rename_txt.bat
+rename_txt_ep.bat
