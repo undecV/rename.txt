@@ -25,8 +25,12 @@ DESCRIPTION = "Rename files or dirs via your text editor."
 
 
 opt = {"LS_FILE_PATH":  "./RENAME.json",
-       "TEXT_EDITOR_PATH": "D:\\Program Files (x86)\\Notepad++\\notepad++.exe",
+       "TEXT_EDITOR_PATH": r"C:\Program Files\Microsoft VS Code\code.exe",
        "TEXT_EDITOR_ARGS": "{LS_FILE_PATH}"}
+
+
+def sgr(value):
+    return "\x1b[{}m".format(value)
 
 
 def main(argv):
@@ -108,7 +112,11 @@ def main(argv):
             print("{0:03d}/{1:03d} - {2}\n       -> {3}".format(i, items_count, items[i], items_e[i]))
     else:
         for i in range(0, items_count):
-            print("{0:03d}/{1:03d} - {2}\n       -> {3}".format(i, items_count, items_base[i], items_e_base[i]))
+            print("{0:03d}/{1:03d} - {2}".format(i, items_count, items_base[i]))
+            if items_base[i] == items_e_base[i]:
+                print("       -> {}Not changed.{}".format(sgr(32), sgr(0)))  # GREEN
+            else:
+                print("       -> {}{}{}".format(sgr(41), items_e_base[i], sgr(0)))  # RED
         # table_data = [["Index", "Src", "Dst"]]
         # for i in range(0, items_count):
         #     table_data.# append(["{0:03d}/{1:03d}".format(i, items_count), items_base[i], items_e_base[i]])
