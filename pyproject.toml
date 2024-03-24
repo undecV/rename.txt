@@ -1,0 +1,4 @@
+[project]
+name = "renametxt"
+version = "6.1.0"
+description = "RENAME.TXT: a text-based renamer."

@@ -1,0 +1,7 @@
+#!python -m pip install -r
+
+click
+Jinja2
+rich
+pyyaml
+humanize
