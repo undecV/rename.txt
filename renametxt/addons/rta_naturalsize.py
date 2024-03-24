@@ -8,11 +8,14 @@ import humanize
 from renamming.renamming import RenammingItem
 
 from . import RenameTXTAddonType
-from .addons import RenameTXTAddon
+from .addons import RenameTXTAddon, RenameTXTAddonExecuteWhen
 
 
 class RTANaturalsize(RenameTXTAddon):
     """Rename.TXT addon for naturalsize."""
+    @property
+    def execute_when(self) -> list[RenameTXTAddonExecuteWhen]:
+        return [RenameTXTAddonExecuteWhen.AFTER_EDIT]
 
     @property
     def acceptable_extension_names(self) -> list[str]:

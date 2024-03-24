@@ -2,6 +2,7 @@
 
 
 from abc import ABCMeta, abstractmethod
+import enum
 from typing import Any
 
 from renamming.renamming import RenammingItem
@@ -9,12 +10,37 @@ from renamming.renamming import RenammingItem
 from . import RenameTXTAddonType
 
 
+class RenameTXTAddonExecuteWhen(enum.Enum):
+    """
+    Enumeration representing the execution timing of the Rename.TXT addon.
+
+    Attributes:
+        BEFORE_EDIT: Indicates that the addon executes before editing.
+        AFTER_EDIT: Indicates that the addon executes after editing.
+    """
+    BEFORE_EDIT = enum.auto()
+    AFTER_EDIT = enum.auto()
+
+
 class RenameTXTAddonMeta(ABCMeta, RenameTXTAddonType):
     """Metaclass of RenameTXTAddon."""
+
+    # Class property define in Metaclass.
 
 
 class RenameTXTAddon(metaclass=RenameTXTAddonMeta):
     """ABC of Addon for Rename.TXT."""
+    @property
+    @abstractmethod
+    def execute_when(self) -> list[RenameTXTAddonExecuteWhen]:
+        """
+        The execution timing of the Rename.TXT addon.
+
+        Returns:
+            list[RenameTXTAddonExecuteWhen]: A list of possible execution timings (BEFORE_EDIT or AFTER_EDIT).
+        """
+        return NotImplemented
+
     @property
     @abstractmethod
     def acceptable_extension_names(self) -> list[str]:

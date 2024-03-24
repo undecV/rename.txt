@@ -1,6 +1,7 @@
 """RENAME.TXT: a text-based renamer."""
 
 
+from copy import deepcopy
 import sys
 import logging
 import json
@@ -18,6 +19,7 @@ from rich.table import Table
 from renamming.renamming import RenammingItem
 from renamming.string_render import string_render
 from renamming.tempedit import temp_edit
+from addons.addons import RenameTXTAddon, RenameTXTAddonExecuteWhen
 from addons.addons_list import addons_list
 from utilities.utilities import filenameify
 
@@ -66,17 +68,16 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
     # Generate variables from addons
     for _, item in renamming_items.items():
         for addon in addons_list:
-            addon_variables: dict[str, Any] = addon().get_variables(item)
+            addon_instance = addon()
+            if RenameTXTAddonExecuteWhen.BEFORE_EDIT not in addon_instance.execute_when:
+                continue
+            log.debug("For item \"%r\", execute addon: \"%r\"", item, addon.__name__)
+            addon_variables: dict[str, Any] = addon_instance.get_variables(item)
             item.variables.update(addon_variables)
 
     # Debug mode: print table of variables
     if debug_mode:
-        input_items_table = Table()
-        input_items_table.add_column("Path")
-        input_items_table.add_column("Variables")
-        for _, item in renamming_items.items():
-            input_items_table.add_row(str(item.src.name), repr(item.variables))
-        print(input_items_table)
+        print_variables_table(renamming_items)
 
     # Build entries file
     json_lines = [[index, item.src.name] for index, item in renamming_items.items()]
@@ -85,9 +86,9 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
     # Edit entries file
     json_text_edited = json_text
     confirm: bool = False
-    reamming_items_edited: OrderedDict[int, RenammingItem] = OrderedDict()
+    renamming_items_edited: OrderedDict[int, RenammingItem]
     while not confirm:
-        reamming_items_edited = OrderedDict()
+        renamming_items_edited: OrderedDict[int, RenammingItem] = OrderedDict()
 
         print("Opening editor...")
         json_text_edited = temp_edit(json_text_edited, EDITOR, suffix=".jsonc")
@@ -102,19 +103,32 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
             continue
 
         for sequence, (index, filename_edited) in enumerate(data_edited):
-            item = renamming_items[index]
+            item = deepcopy(renamming_items[index])
             item.variables["sequence"] = sequence
+
+            # AFTER_EDIT Addons
+            for addon in addons_list:
+                addon_instance: RenameTXTAddon = addon()
+                if RenameTXTAddonExecuteWhen.AFTER_EDIT not in addon_instance.execute_when:
+                    continue
+                addon_variables: dict[str, Any] = addon().get_variables(item)
+                item.variables.update(addon_variables)
+
             filename_edited = string_render(filename_edited, item.variables)
             filename_edited = filenameify(filename_edited)
             item.dst = item.src.parent / filename_edited
-            reamming_items_edited[index] = item
+            renamming_items_edited[index] = item
 
-        print_diff(reamming_items_edited)
+        # Debug mode: print table of variables
+        if debug_mode:
+            print_variables_table(renamming_items_edited)
 
-        if len(renamming_items) != len(reamming_items_edited):
+        print_diff(renamming_items_edited)
+
+        if len(renamming_items) != len(renamming_items_edited):
             print("[yellow]Some entries were deleted.[/yellow]")
 
-        dsts = [item.dst for item in reamming_items_edited.values()]
+        dsts = [item.dst for item in renamming_items_edited.values()]
         if len(dsts) != len(set(dsts)):
             print("[red]Duplicate entries found.[/red]")
             click.confirm("Continue editing?", default=True, abort=True)
@@ -127,7 +141,7 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
 
     # Generate recover file
     recover_entries: list[dict[str, Any]] = []
-    for index, item in reamming_items_edited.items():
+    for index, item in renamming_items_edited.items():
         recover_entry = {
             "src": str(item.src),
             "tmp": str(item.tmp),
@@ -141,7 +155,7 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
 
     # Filter
     rename_to_tmp_items: OrderedDict[int, RenammingItem] = OrderedDict()
-    for index, item in reamming_items_edited.items():
+    for index, item in renamming_items_edited.items():
         if not item.has_changed():
             continue
         rename_to_tmp_items[index] = item
@@ -153,6 +167,16 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
     _ = safe_batch_rename(rename_to_dst_items, SafeBatchRenameMode.DST, dryrun)
 
     print("[green]Done.[/green]")
+
+
+def print_variables_table(renamming_items: Mapping[int, RenammingItem]):
+    """Print item variables in a table."""
+    input_items_table = Table()
+    input_items_table.add_column("Path")
+    input_items_table.add_column("Variables")
+    for _, item in renamming_items.items():
+        input_items_table.add_row(str(item.src.name), repr(item.variables))
+    print(input_items_table)
 
 
 class SafeBatchRenameMode(enum.Enum):

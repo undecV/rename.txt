@@ -10,7 +10,7 @@ from typing import Any
 from renamming.renamming import RenammingItem
 
 from . import RenameTXTAddonType
-from .addons import RenameTXTAddon
+from .addons import RenameTXTAddon, RenameTXTAddonExecuteWhen
 
 
 class RTAStatTime(RenameTXTAddon):
@@ -18,6 +18,9 @@ class RTAStatTime(RenameTXTAddon):
     Rename.TXT addon for Stat Time.
     Datetime object of item.lstat().
     """
+    @property
+    def execute_when(self) -> list[RenameTXTAddonExecuteWhen]:
+        return [RenameTXTAddonExecuteWhen.BEFORE_EDIT]
 
     @property
     def acceptable_extension_names(self) -> list[str]:
