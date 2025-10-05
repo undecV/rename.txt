@@ -81,7 +81,7 @@ def main(items: list[str], debug_mode: bool, dryrun: bool, output: str):
 
     # Build entries file
     json_lines = [[index, item.src.name] for index, item in renamming_items.items()]
-    json_text = "[\n" + ",\n".join([json.dumps(line) for line in json_lines]) + "\n]\n"
+    json_text = "[\n" + ",\n".join([json.dumps(line, ensure_ascii=False) for line in json_lines]) + "\n]\n"
 
     # Edit entries file
     json_text_edited = json_text

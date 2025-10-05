@@ -1,16 +1,14 @@
 {
-    "python.analysis.typeCheckingMode": "basic",
-    "python.analysis.autoImportCompletions": true,
-    "mypy-type-checker.args": [
-        "--namespace-packages --explicit-package-bases"
-    ],
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./test",
+        "./tests",
         "-p",
-        "*_test.py"
+        "test_*.py"
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
+    "python.analysis.exclude": [
+        "**/.old_version/**"
+    ]
 }
